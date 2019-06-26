@@ -1,16 +1,19 @@
 package SprintBootAppMedicine.DB;
 
+import SprintBootAppMedicine.Model.PatientModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class PatientDAO {
 
     private Logger log = LogManager.getLogger(ConnectionDB.class);
     private String tempValue = "0";
+    private PatientModel tempPatient;
 
     private Connection connectionDatabase() throws Exception {
         ConnectionDB connectionDB = new ConnectionDB();
@@ -35,7 +38,7 @@ public class PatientDAO {
         }
     }
 
-    public String selectValuePesel(String pesel) {
+    public String searchOnePatient(String pesel) {
         try {
             String selectQuery = "SELECT pesel FROM Patient WHERE pesel = ?";
             PreparedStatement selectPesel = connectionDatabase().prepareStatement(selectQuery);
@@ -50,6 +53,30 @@ public class PatientDAO {
             log.error(e);
         }
         return tempValue;
+    }
+    public PatientModel getPatientDb(String pesel){
+        PatientModel patientModel = new PatientModel();
+        try {
+            String selectQuery = "SELECT * FROM Patient WHERE pesel = ?";
+            PreparedStatement selectPesel = connectionDatabase().prepareStatement(selectQuery);
+            selectPesel.setString(1, pesel);
+            ResultSet temp = selectPesel.executeQuery();
+            while (temp.next()) {
+                if (temp.getString("pesel").equals(pesel)){
+                    patientModel.setPesel(temp.getString("pesel"));
+                    patientModel.setName(temp.getString("name"));
+                    patientModel.setSurname(temp.getString("surname"));
+                    patientModel.setAge(temp.getString("age"));
+                    patientModel.setGender(temp.getString("gender"));
+                    patientModel.setDescription(temp.getString("description"));
+                    tempPatient = patientModel;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e);
+        }
+        return tempPatient;
     }
 
     public void deletePatientByPesel(String pesel) {
@@ -82,5 +109,27 @@ public class PatientDAO {
             e.printStackTrace();
             log.error(e);
         }
+    }
+    public ArrayList<PatientModel> getAllPatients(){
+        ArrayList<PatientModel> listPatient = new ArrayList<PatientModel>();
+        PatientModel patient = new PatientModel();
+        try{
+            String selectQuery = "SELECT * FROM Patient";
+            PreparedStatement findAllPatient = connectionDatabase().prepareStatement(selectQuery);
+            ResultSet find = findAllPatient.executeQuery(selectQuery);
+            while (find.next()){
+                patient.setPesel(find.getString("pesel"));
+                patient.setName(find.getString("name"));
+                patient.setSurname(find.getString("surname"));
+                patient.setAge(find.getString("age"));
+                patient.setGender(find.getString("gender"));
+                patient.setDescription(find.getString("description"));
+                listPatient.add(patient);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error(e);
+        }
+        return listPatient;
     }
 }

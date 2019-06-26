@@ -35,7 +35,7 @@ public class ConnectionDB {
     public void createTablesDB() throws Exception {
         try {
             Connection con = getConnectionDB();
-            PreparedStatement patientTable = con.prepareStatement("CREATE TABLE IF NOT EXISTS pat(id INT AUTO_INCREMENT, pesel varchar(255) NOT NULL, name varchar(255), surname varchar(255), age varchar(255), gender varchar(255), description varchar(255), creation_date TIMESTAMP DEFAULT NOW(), PRIMARY KEY(id));");
+            PreparedStatement patientTable = con.prepareStatement("CREATE TABLE IF NOT EXISTS Patient(id INT AUTO_INCREMENT, pesel varchar(255) NOT NULL, name varchar(255), surname varchar(255), age varchar(255), gender varchar(255), description varchar(255), creation_date TIMESTAMP DEFAULT NOW(), PRIMARY KEY(id));");
             patientTable.executeUpdate();
             log.info("Create tables");
         } catch (Exception e) {

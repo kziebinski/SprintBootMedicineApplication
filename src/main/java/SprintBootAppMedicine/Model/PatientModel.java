@@ -23,6 +23,7 @@ public class PatientModel {
         this.gender = gender;
         this.description = description;
     }
+    public PatientModel(){ }
 
     public String getPesel() {
         return pesel;
