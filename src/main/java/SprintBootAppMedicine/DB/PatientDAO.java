@@ -19,7 +19,7 @@ public class PatientDAO {
 
     public void insertNewPatient(String pesel, String name, String surname, String age, String gender, String description) {
         try {
-            String quesry = "INSERT INTO pat(pesel, name, surname, age, gender, description) VALUES (?,?,?,?,?,?)";
+            String quesry = "INSERT INTO Patient(pesel, name, surname, age, gender, description) VALUES (?,?,?,?,?,?)";
             PreparedStatement insertPatient = connectionDatabase().prepareStatement(quesry);
             insertPatient.setString(1, pesel);
             insertPatient.setString(2, name);
@@ -37,7 +37,7 @@ public class PatientDAO {
 
     public String selectValuePesel(String pesel) {
         try {
-            String selectQuery = "SELECT pesel FROM pat WHERE pesel = ?";
+            String selectQuery = "SELECT pesel FROM Patient WHERE pesel = ?";
             PreparedStatement selectPesel = connectionDatabase().prepareStatement(selectQuery);
             selectPesel.setString(1, pesel);
             ResultSet temp = selectPesel.executeQuery();
@@ -54,7 +54,7 @@ public class PatientDAO {
 
     public void deletePatientByPesel(String pesel) {
         try {
-            String deleteQuesry = "DELETE FROM pat WHERE pesel = ?";
+            String deleteQuesry = "DELETE FROM Patient WHERE pesel = ?";
             PreparedStatement deletePatientById = connectionDatabase().prepareStatement(deleteQuesry);
             deletePatientById.setString(1, pesel);
             deletePatientById.execute();
@@ -66,7 +66,7 @@ public class PatientDAO {
     }
     public void updatePatientByPesel(String pesel, String name, String surname, String age, String gender, String description){
         try {
-            String updateQuery = "UPDATE pat " +
+            String updateQuery = "UPDATE Patient " +
                     "SET name = ? , surname = ? , age = ? , gender = ? , description = ? " +
                     "WHERE pesel = ?";
             PreparedStatement updatePatientById = connectionDatabase().prepareStatement(updateQuery);
